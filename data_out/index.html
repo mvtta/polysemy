@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semantic Frame Co-occurrence Network</title>
+  <script src="https://unpkg.com/3d-force-graph"></script>
+</head>
+<body>
+  <div id="3d-graph" style="width: 100%; height: 100vh;"></div>
+  
+  <script>
+    // Load the graph data
+    fetch('data_out/semantic_frame_network.json')
+      .then(response => response.json())
+      .then(data => {
+        // Create the 3D force graph
+        const Graph = ForceGraph3D()
+          (document.getElementById('3d-graph'))
+          .graphData(data)
+          .nodeAutoColorBy('group') // Color nodes by degree group
+          .nodeLabel(node => `${node.id} (Connections: ${node.group})`) // Hover label
+          .linkWidth(link => Math.sqrt(link.value)) // Link width proportional to weight
+          .linkDirectionalParticles(2) // Add particles along links
+          .linkDirectionalParticleSpeed(0.01); // Particle speed
+      });
+  </script>
+</body>
+</html>
